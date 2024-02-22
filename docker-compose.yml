@@ -1,13 +1,13 @@
 version: '3'
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     links:
       - db:db
     ports:
-      - "5005:5005"
+      - "8010:8010"
     environment:
       - DB_URL=postgresql+psycopg2://user:password@db:5432/auto_cart
     depends_on:

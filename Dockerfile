@@ -15,6 +15,7 @@ COPY requirements-test.txt .
 COPY settings.py .
 
 RUN make setup
+RUN make install
 
 COPY src ./src/
 COPY resources ./resources/
