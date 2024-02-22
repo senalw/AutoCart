@@ -1,5 +1,5 @@
 FROM python:3.11
-LABEL author='Label A'
+LABEL author='SenalW'
 
 WORKDIR /AutoCart
 
@@ -12,6 +12,7 @@ COPY Makefile .
 COPY requirements.txt .
 COPY requirements-style.txt .
 COPY requirements-test.txt .
+COPY settings.py .
 
 RUN make setup
 
