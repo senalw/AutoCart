@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "715ff72f-b0f1-44a6-8d65-937d4934af5e",
+		"name": "AutoCart REST API",
+		"description": "This Rest API has below endpoints which cater below requirements.\n\n- As a company, I want all my products in a database, so I can offer them via our new platform to customers.\n    \n- As a client, I want to add a product to my shopping cart, so I can order it at a later stage.\n    \n- As a client, I want to remove a product from my shopping cart, so I can tailor the order to what I actually need.\n    \n- As a client, I want to order the current contents in my shopping cart, so I can receive the products I need to repair my car.\n    \n- As a client, I want to select a delivery date and time, so I will be there to receive the order.\n    \n- As a client, I want to see an overview of all the products, so I can choose which product I want.\n    \n- As a client, I want to view the details of a product, so I can see if the product satisfies my needs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5275553"
+	},
+	"item": [
+		{
+			"name": "List Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8010/api/v1/product/list-products",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"list-products"
+					]
+				},
+				"description": "List Existing Products"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"d0a8f8e7-549f-42fc-826b-0ef63dd9529b\",\n    \"name\": \"12v 90Ah battery\",\n    \"price\": 20000,\n    \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n    \"qty\": 12\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/product/add-product",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"add-product"
+					]
+				},
+				"description": "Add new product"
+			},
+			"response": []
+		},
+		{
+			"name": "Get product by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8010/api/v1/product/get/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"get",
+						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+					]
+				},
+				"description": "Get existing product by id"
+			},
+			"response": []
+		},
+		{
+			"name": "Update product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product\": {\n        \"id\": \"d0a8f8e7-549f-42fc-826b-0ef63dd9529b\",\n        \"name\": \"12v 90Ah battery\",\n        \"price\": 30000.0,\n        \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n        \"qty\": 12\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/product/update-product",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"update-product"
+					]
+				},
+				"description": "Update product by id."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8010/api/v1/product/delete/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"product",
+						"delete",
+						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+					]
+				},
+				"description": "Delete product by id."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8010/api/v1/cart/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"cart",
+						"create"
+					]
+				},
+				"description": "Add a new car before adding products to the cart."
+			},
+			"response": []
+		},
+		{
+			"name": "Add products to created cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cart_id\": \"2e9a7ae6-0d0b-45cd-a936-7495fe12cf91\",\n    \"qty\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/cart/add-to-cart/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"cart",
+						"add-to-cart",
+						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+					]
+				},
+				"description": "Add products to the created cart by passing cart id and product_ids."
+			},
+			"response": []
+		},
+		{
+			"name": "View items in the cart",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/cart/view-items/5f07485d-9b4d-49f6-84d8-6801ee624735",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"cart",
+						"view-items",
+						"5f07485d-9b4d-49f6-84d8-6801ee624735"
+					]
+				},
+				"description": "View already added items in the cart."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete product from the cart by product_id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cart_id\": \"33a04ae7-fd78-44d7-b7bb-838d730b52a0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/cart/remove-from-cart/09809500-b8d8-431f-8ef2-f0749416de3d",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"cart",
+						"remove-from-cart",
+						"09809500-b8d8-431f-8ef2-f0749416de3d"
+					]
+				},
+				"description": "Delete procuts from the cart by id."
+			},
+			"response": []
+		},
+		{
+			"name": "Checkout Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"delivery_address\": \"Car Mart, Colombo - 03\",\n    \"delivery_time\": \"2024-03-08 15:30:00.123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8010/api/v1/order/checkout/2e9a7ae6-0d0b-45cd-a936-7495fe12cf91",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"checkout",
+						"2e9a7ae6-0d0b-45cd-a936-7495fe12cf91"
+					]
+				},
+				"description": "Checkout the items in the cart."
+			},
+			"response": []
+		},
+		{
+			"name": "View placed order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8010/api/v1/order/view/c4872311-1c55-44ec-9ccf-ab9ee75da917",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"view",
+						"c4872311-1c55-44ec-9ccf-ab9ee75da917"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
