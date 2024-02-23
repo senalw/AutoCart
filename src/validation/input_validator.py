@@ -17,7 +17,7 @@ class RequestValidator:
         if not request.name:
             raise RequestValidationError("Product name is not present in the request")
 
-        if not request.price <= 0:
+        if request.price <= 0:
             raise RequestValidationError("Product price should be greater than 0")
 
     @staticmethod
@@ -25,10 +25,10 @@ class RequestValidator:
         if not request.product.name:
             raise RequestValidationError("Product name is not present in the request")
 
-        if not request.product.price <= 0:
+        if request.product.price <= 0:
             raise RequestValidationError("Product price should be greater than 0")
 
-        if not request.product.qty < 0:
+        if request.product.qty < 0:
             raise RequestValidationError(
                 "Product quantity can be updated to minus value"
             )
@@ -47,7 +47,7 @@ class RequestValidator:
                 f"Invalid cart id present in the request: {request.cart_id}"
             )
 
-        if not request.qty <= 0:
+        if request.qty <= 0:
             raise RequestValidationError("Quantity of product should be greater than 0")
 
     @staticmethod
