@@ -13,7 +13,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8010/api/v1/product/list-products",
+					"raw": "localhost:8010/api/v1/products?page_size=3&page_token=Ng==",
 					"host": [
 						"localhost"
 					],
@@ -21,8 +21,17 @@
 					"path": [
 						"api",
 						"v1",
-						"product",
-						"list-products"
+						"products"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "3"
+						},
+						{
+							"key": "page_token",
+							"value": "Ng=="
+						}
 					]
 				},
 				"description": "List Existing Products"
@@ -36,7 +45,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"d0a8f8e7-549f-42fc-826b-0ef63dd9529b\",\n    \"name\": \"12v 90Ah battery\",\n    \"price\": 20000,\n    \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n    \"qty\": 12\n}\n",
+					"raw": "{\n    \"name\": \"12v 90Ah battery\",\n    \"price\": 20000,\n    \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n    \"qty\": 12\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +53,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8010/api/v1/product/add-product",
+					"raw": "localhost:8010/api/v1/products",
 					"host": [
 						"localhost"
 					],
@@ -52,8 +61,7 @@
 					"path": [
 						"api",
 						"v1",
-						"product",
-						"add-product"
+						"products"
 					]
 				},
 				"description": "Add new product"
@@ -62,11 +70,18 @@
 		},
 		{
 			"name": "Get product by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
 				"url": {
-					"raw": "localhost:8010/api/v1/product/get/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"raw": "localhost:8010/api/v1/products/6f4d89ff-0b9d-45d3-8540-6bb0b6948832",
 					"host": [
 						"localhost"
 					],
@@ -74,9 +89,8 @@
 					"path": [
 						"api",
 						"v1",
-						"product",
-						"get",
-						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+						"products",
+						"6f4d89ff-0b9d-45d3-8540-6bb0b6948832"
 					]
 				},
 				"description": "Get existing product by id"
@@ -90,7 +104,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"product\": {\n        \"id\": \"d0a8f8e7-549f-42fc-826b-0ef63dd9529b\",\n        \"name\": \"12v 90Ah battery\",\n        \"price\": 30000.0,\n        \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n        \"qty\": 12\n    }\n}",
+					"raw": "{\n    \"product\": {\n        \"id\": \"6f4d89ff-0b9d-45d3-8540-6bb0b6948832\",\n        \"name\": \"12v 90Ah battery\",\n        \"price\": 30000.0,\n        \"description\": \"12V 90Ah Exide battery with 2 years warrenty\",\n        \"qty\": 12\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,7 +112,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8010/api/v1/product/update-product",
+					"raw": "localhost:8010/api/v1/products",
 					"host": [
 						"localhost"
 					],
@@ -106,8 +120,7 @@
 					"path": [
 						"api",
 						"v1",
-						"product",
-						"update-product"
+						"products"
 					]
 				},
 				"description": "Update product by id."
@@ -120,7 +133,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8010/api/v1/product/delete/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"raw": "localhost:8010/api/v1/products/6f4d89ff-0b9d-45d3-8540-6bb0b6948832",
 					"host": [
 						"localhost"
 					],
@@ -128,9 +141,8 @@
 					"path": [
 						"api",
 						"v1",
-						"product",
-						"delete",
-						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+						"products",
+						"6f4d89ff-0b9d-45d3-8540-6bb0b6948832"
 					]
 				},
 				"description": "Delete product by id."
@@ -143,7 +155,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8010/api/v1/cart/create",
+					"raw": "localhost:8010/api/v1/cart",
 					"host": [
 						"localhost"
 					],
@@ -151,8 +163,7 @@
 					"path": [
 						"api",
 						"v1",
-						"cart",
-						"create"
+						"cart"
 					]
 				},
 				"description": "Add a new car before adding products to the cart."
@@ -164,17 +175,8 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"cart_id\": \"2e9a7ae6-0d0b-45cd-a936-7495fe12cf91\",\n    \"qty\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "localhost:8010/api/v1/cart/add-to-cart/d0a8f8e7-549f-42fc-826b-0ef63dd9529b",
+					"raw": "localhost:8010/api/v1/cart/d52266db-b05a-4b7b-bd8b-f97b6049ee7e/product/6f4d89ff-0b9d-45d3-8540-6bb0b6948832?qty=2",
 					"host": [
 						"localhost"
 					],
@@ -183,8 +185,15 @@
 						"api",
 						"v1",
 						"cart",
-						"add-to-cart",
-						"d0a8f8e7-549f-42fc-826b-0ef63dd9529b"
+						"d52266db-b05a-4b7b-bd8b-f97b6049ee7e",
+						"product",
+						"6f4d89ff-0b9d-45d3-8540-6bb0b6948832"
+					],
+					"query": [
+						{
+							"key": "qty",
+							"value": "2"
+						}
 					]
 				},
 				"description": "Add products to the created cart by passing cart id and product_ids."
@@ -209,7 +218,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8010/api/v1/cart/view-items/5f07485d-9b4d-49f6-84d8-6801ee624735",
+					"raw": "localhost:8010/api/v1/cart/d52266db-b05a-4b7b-bd8b-f97b6049ee7e",
 					"host": [
 						"localhost"
 					],
@@ -218,8 +227,7 @@
 						"api",
 						"v1",
 						"cart",
-						"view-items",
-						"5f07485d-9b4d-49f6-84d8-6801ee624735"
+						"d52266db-b05a-4b7b-bd8b-f97b6049ee7e"
 					]
 				},
 				"description": "View already added items in the cart."
@@ -231,17 +239,8 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"cart_id\": \"33a04ae7-fd78-44d7-b7bb-838d730b52a0\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "localhost:8010/api/v1/cart/remove-from-cart/09809500-b8d8-431f-8ef2-f0749416de3d",
+					"raw": "localhost:8010/api/v1/cart/9fdb6b5a-6cbe-4dbd-8677-d0db4e11f0c5/product/6f4d89ff-0b9d-45d3-8540-6bb0b6948832",
 					"host": [
 						"localhost"
 					],
@@ -250,8 +249,9 @@
 						"api",
 						"v1",
 						"cart",
-						"remove-from-cart",
-						"09809500-b8d8-431f-8ef2-f0749416de3d"
+						"9fdb6b5a-6cbe-4dbd-8677-d0db4e11f0c5",
+						"product",
+						"6f4d89ff-0b9d-45d3-8540-6bb0b6948832"
 					]
 				},
 				"description": "Delete procuts from the cart by id."
@@ -273,7 +273,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8010/api/v1/order/checkout/2e9a7ae6-0d0b-45cd-a936-7495fe12cf91",
+					"raw": "localhost:8010/api/v1/order/cart/06a30e8b-80e2-4218-addd-f2ef943655b6",
 					"host": [
 						"localhost"
 					],
@@ -282,8 +282,8 @@
 						"api",
 						"v1",
 						"order",
-						"checkout",
-						"2e9a7ae6-0d0b-45cd-a936-7495fe12cf91"
+						"cart",
+						"06a30e8b-80e2-4218-addd-f2ef943655b6"
 					]
 				},
 				"description": "Checkout the items in the cart."
@@ -296,7 +296,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8010/api/v1/order/view/c4872311-1c55-44ec-9ccf-ab9ee75da917",
+					"raw": "localhost:8010/api/v1/order/2357cc96-7c5a-4259-8df6-99820637d3a1",
 					"host": [
 						"localhost"
 					],
@@ -305,8 +305,7 @@
 						"api",
 						"v1",
 						"order",
-						"view",
-						"c4872311-1c55-44ec-9ccf-ab9ee75da917"
+						"2357cc96-7c5a-4259-8df6-99820637d3a1"
 					]
 				}
 			},
