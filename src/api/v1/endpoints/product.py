@@ -4,13 +4,12 @@ from typing import List, Optional
 from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Depends, Query, status
 from src.core.container import Container
-from src.core.exception import NotFoundError
+from src.core.exception import NotFoundError, ValidationError
 from src.domain.entity import ProductEntity
-from src.mapper import SchemaToEntityMapper
+from src.mapper import EntityToSchemaMapper, SchemaToEntityMapper
 from src.schema import (
     CreateProductRequest,
     CreateProductResponse,
-    DeleteProductResponse,
     GetProductResponse,
     ListProductResponse,
     ProductSchema,
@@ -18,7 +17,8 @@ from src.schema import (
     UpdateProductResponse,
 )
 from src.service import ProductService
-from src.util.utils import get_next_page_token, get_page_number
+from src.util.utils import get_next_page_token, get_page_number, is_valid_uuid
+from src.validation.input_validator import RequestValidator
 
 router = APIRouter(prefix="/products")
 
@@ -62,26 +62,14 @@ async def create_product(
     ),
 ) -> CreateProductResponse:
 
-    # If product_id is not provided, it'll be generated internally
-    product_id: uuid.UUID = request.id if request.id else uuid.uuid4()
-
-    product_entity: ProductEntity = ProductEntity(
-        id=product_id,
-        name=request.name,
-        price=request.price,
-        description=request.description,
-        qty=request.qty,
+    RequestValidator.validate_create_product_request(request)
+    product_entity: ProductEntity = SchemaToEntityMapper.getProductSchemaFromRequest(
+        request, uuid.uuid4()
     )
     product_service.add_product(product_entity)
 
     return CreateProductResponse(
-        product=ProductSchema(
-            id=product_id,
-            name=request.name,
-            price=request.price,
-            description=request.description,
-            qty=request.qty,
-        )
+        product=EntityToSchemaMapper.getSchemaFromProductEntity(product_entity)
     )
 
 
@@ -117,12 +105,14 @@ async def update_product_by_id(
         Provide[Container.product_service]
     ),
 ) -> UpdateProductResponse:
-    product_id = request.product.id
+    RequestValidator.validate_update_product_request(request)
     product: Optional[ProductSchema] = product_service.get_product_by_id(  # noqa B008
-        product_id
+        request.product.product_id
     )
     if not product:
-        raise NotFoundError(f"Product not found for the product_id: {product_id}")
+        raise NotFoundError(
+            f"Product not found for the product_id: {request.product.product_id}"
+        )
 
     updated_product: ProductSchema = product_service.update_product(
         SchemaToEntityMapper.getProductEntityFromSchema(request.product)
@@ -133,7 +123,6 @@ async def update_product_by_id(
 @router.delete(
     "/{product_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    response_model=DeleteProductResponse,
 )
 @inject
 async def delete_product_by_id(
@@ -141,6 +130,9 @@ async def delete_product_by_id(
     product_service: ProductService = Depends(  # noqa B008
         Provide[Container.product_service]
     ),
-) -> DeleteProductResponse:
+) -> None:
+    if not is_valid_uuid(product_id):
+        raise ValidationError(
+            f"Invalid product id present in the request: {product_id}"
+        )
     product_service.delete_product(uuid.UUID(product_id))
-    return DeleteProductResponse()

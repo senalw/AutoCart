@@ -1,6 +1,8 @@
+import uuid
+
 from src.domain.entity import OrderEntity, ProductEntity
 from src.schema import OrderSchema
-from src.schema.product_schema import ProductSchema
+from src.schema.product_schema import CreateProductRequest, ProductSchema
 
 
 class SchemaToEntityMapper:
@@ -24,4 +26,16 @@ class SchemaToEntityMapper:
             delivery_time=order_schema.delivery_time,
             delivery_status=order_schema.delivery_status,
             items=order_schema.items,
+        )
+
+    @staticmethod
+    def getProductSchemaFromRequest(
+        request: CreateProductRequest, product_id: uuid.UUID
+    ) -> ProductEntity:
+        ProductEntity(
+            id=product_id,
+            name=request.name,
+            price=request.price,
+            description=request.description,
+            qty=request.qty,
         )

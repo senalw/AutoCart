@@ -14,7 +14,6 @@ class ProductSchema(BaseModel):
 
 
 class CreateProductRequest(Request):
-    id: uuid.UUID
     name: str
     qty: int
     price: float
@@ -48,7 +47,3 @@ class UpdateProductResponse(Response):
 
 class DeleteProductRequest(Request):
     id: uuid.UUID
-
-
-class DeleteProductResponse(Response):
-    pass

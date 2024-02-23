@@ -17,12 +17,10 @@ Special Notes
 
 ### Limitations
 * Only basic validations are included and edge cases may fail.
-* Atomic operation are not implemented for handling Stock on hand quantity when adding/deleting items to cart.
-* Unit tests were not implemented due to the limited time.
-* Pagination is not available for list endpoints. E.g list_products
+* Atomic operation are not implemented for handling Stock on hand quantity when adding/deleting items to/from cart.
 
 ### Assumptions
-* There'll be a separate authentication service and user_service which allows to register users and do their authentication.
+* Assumed that there will be separate services for user management and authentication.
 
 How To Run it
 --------------

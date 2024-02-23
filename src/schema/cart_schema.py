@@ -17,7 +17,6 @@ class CreateCartResponse(Response):
 
 
 class AddToCartRequest(Request):
-    # If cart_id is not in the request, then api generates a new UUID for the cart and creates a new cart. # noqa E501
     cart_id: str
     qty: int
 
@@ -27,16 +26,10 @@ class AddToCartResponse(Response):
 
 
 class RemoveFromCartRequest(Request):
-    # If cart_id is not in the request, then api generates a new UUID for the cart and creates a new cart. # noqa E501
     cart_id: uuid.UUID
 
 
-class RemoveFromCartResponse(Response):
-    pass
-
-
 class ViewCartItemsRequest(Request):
-    # If cart_id is not in the request, then api generates a new UUID for the cart and creates a new cart. # noqa E501
     cart_id: uuid.UUID
 
 

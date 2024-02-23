@@ -101,7 +101,7 @@ class OrderService:
         with self.database.get_session() as session:
             cart_entity: CartEntity = self.cart_repository.get_cart(session, cart_id)
             if not cart_entity:
-                raise NotFoundError(f"No cart for cart id : {cart_id}")
+                raise NotFoundError(f"Unable to find cart for id : {cart_id}")
             return EntityToSchemaMapper.getSchemaFromCartEntity(cart_entity)
 
     def checkout_order(
@@ -134,6 +134,6 @@ class OrderService:
             )
 
             if not order_entity:
-                raise NotFoundError(f"Order not found for the id: {order_id}")
+                raise NotFoundError(f"Unable to find order for id the id: {order_id}")
 
             return EntityToSchemaMapper.getOrderSchemaFromOrderEntity(order_entity)

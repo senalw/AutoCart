@@ -1,4 +1,5 @@
 import base64
+import uuid
 from typing import Optional
 
 
@@ -48,3 +49,11 @@ def _convert_offset_to_page_token(record_offset: int) -> Optional[str]:
     token_byte = str(record_offset).encode("utf-8")
     token_string = base64.b64encode(token_byte).decode("utf-8")
     return token_string
+
+
+def is_valid_uuid(uuid_str: str) -> bool:
+    try:
+        uuid_obj = uuid.UUID(uuid_str)
+        return str(uuid_obj) == uuid_str
+    except ValueError:
+        return False

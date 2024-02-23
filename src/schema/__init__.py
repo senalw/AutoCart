@@ -5,7 +5,6 @@ from .cart_schema import (  # noqa F401
     CartSchema,
     CreateCartResponse,
     RemoveFromCartRequest,
-    RemoveFromCartResponse,
     ViewCartItemsRequest,
     ViewCartItemsResponse,
 )
@@ -18,7 +17,6 @@ from .order_schema import (  # noqa F401
 from .product_schema import (  # noqa F401
     CreateProductRequest,
     CreateProductResponse,
-    DeleteProductResponse,
     GetProductRequest,
     GetProductResponse,
     ListProductResponse,
