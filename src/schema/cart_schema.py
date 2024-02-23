@@ -32,7 +32,7 @@ class RemoveFromCartRequest(Request):
 
 
 class RemoveFromCartResponse(Response):
-    items: CartSchema
+    pass
 
 
 class ViewCartItemsRequest(Request):

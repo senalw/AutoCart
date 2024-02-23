@@ -73,7 +73,7 @@ class OrderService:
                     f"Unable to add to cart due to product is not found for the product_id: {product_id}"  # noqa E501
                 )
 
-    def remove_from_cart(self, product_id: uuid.UUID, cart_id: uuid.UUID) -> CartSchema:
+    def remove_from_cart(self, product_id: uuid.UUID, cart_id: uuid.UUID) -> None:
         with self.database.get_session() as session:
             cart_entity: CartEntity = self.cart_repository.get_cart(session, cart_id)
 
@@ -96,8 +96,6 @@ class OrderService:
                     session.delete(
                         cart_product
                     )  # Delete cart_product_entity from the database.
-
-            return EntityToSchemaMapper.getSchemaFromCartEntity(cart_entity)
 
     def view_items_in_the_cart(self, cart_id: uuid.UUID) -> CartSchema:
         with self.database.get_session() as session:

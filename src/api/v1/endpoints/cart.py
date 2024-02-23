@@ -56,7 +56,7 @@ async def add_to_cart(
 
 @router.delete(
     "/{product_id}",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     response_model=RemoveFromCartResponse,
 )
 @inject
@@ -68,10 +68,8 @@ async def remove_item_from_cart(
     ),
 ) -> RemoveFromCartResponse:
     product_id: uuid.UUID = uuid.UUID(product_id)
-    cart_schema: CartSchema = order_service.remove_from_cart(
-        product_id, request.cart_id
-    )
-    return RemoveFromCartResponse(items=cart_schema)
+    order_service.remove_from_cart(product_id, request.cart_id)
+    return RemoveFromCartResponse()
 
 
 @router.get(
@@ -80,7 +78,7 @@ async def remove_item_from_cart(
     response_model=ViewCartItemsResponse,
 )
 @inject
-async def view_cart_items_for_user(
+async def view_cart_items(
     cart_id: str,
     order_service: OrderService = Depends(  # noqa B008
         Provide[Container.order_service]
