@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
 from src.api.v1.routes import routers as v1_routers
 from src.core.container import Container
 from src.util.singleton import singleton
@@ -12,7 +11,7 @@ class AppCreator:
         self.app = FastAPI(
             title=Container.conf.project_config.name,
             openapi_url=f"{Container.conf.project_config.api}/openapi.json",
-            version="0.0.1",
+            version=Container.conf.project_config.version,
             swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"},
         )
 
@@ -21,15 +20,6 @@ class AppCreator:
         self.db = self.container.db()
         self.db.drop_tables()
         self.db.create_tables()
-
-        # set cors
-        # self.app.add_middleware(
-        #     CORSMiddleware,
-        #     allow_origins=["*"],
-        #     allow_credentials=True,
-        #     allow_methods=["*"],
-        #     allow_headers=["*"],
-        # )
 
         # Route to serve the Swagger UI
         @self.app.get("/docs", include_in_schema=False)

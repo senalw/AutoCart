@@ -12,10 +12,16 @@ class Config:
         return cls._instance
 
     def __init__(self):
-        config_parser: ConfigParser = ConfigParser(interpolation=EnvInterpolation())
+        config_parser: ConfigParser = ConfigParser(
+            interpolation=EnvInterpolation()
+        )  # noqa E501
         config_parser.read(f"{ROOT_DIR}/resources/config.ini")
-        self.db_configs: Config.DatabaseConfig = Config.DatabaseConfig(config_parser)
-        self.project_config: Config.ProjectConfig = Config.ProjectConfig(config_parser)
+        self.db_configs: Config.DatabaseConfig = Config.DatabaseConfig(
+            config_parser
+        )  # noqa E501
+        self.project_config: Config.ProjectConfig = Config.ProjectConfig(
+            config_parser
+        )  # noqa E501
 
     class DatabaseConfig:
         def __init__(self, configs: ConfigParser) -> None:
@@ -25,3 +31,4 @@ class Config:
         def __init__(self, configs: ConfigParser) -> None:
             self.name: str = configs.get("Project", "NAME")
             self.api: str = configs.get("Project", "API")
+            self.version: str = configs.get("Project", "VERSION")
