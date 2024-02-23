@@ -1,4 +1,4 @@
-from src.domain.entity import ProductEntity, OrderEntity
+from src.domain.entity import OrderEntity, ProductEntity
 from src.schema import OrderSchema
 from src.schema.product_schema import ProductSchema
 

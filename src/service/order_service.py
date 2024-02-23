@@ -1,9 +1,9 @@
-from _datetime import datetime
 import uuid
+from datetime import datetime
 
 from src.core.database.postgres_client import PostgresClient
-from src.core.exception import NotFoundError, NotAvailableError
-from src.domain.entity import ProductEntity, CartEntity, OrderEntity
+from src.core.exception import NotAvailableError, NotFoundError
+from src.domain.entity import CartEntity, OrderEntity, ProductEntity
 from src.helper.service_helper import OrderServiceHelper
 from src.mapper import EntityToSchemaMapper
 from src.repository import (
@@ -70,7 +70,7 @@ class OrderService:
                 )
             else:
                 raise NotFoundError(
-                    f"Unable to add to cart due to product is not found for the product_id: {product_id}"
+                    f"Unable to add to cart due to product is not found for the product_id: {product_id}"  # noqa E501
                 )
 
     def remove_from_cart(self, product_id: uuid.UUID, cart_id: uuid.UUID) -> CartSchema:

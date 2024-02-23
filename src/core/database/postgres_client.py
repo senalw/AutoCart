@@ -2,16 +2,15 @@ import logging
 from contextlib import contextmanager
 
 from fastapi import status
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine, Engine, text
 from sqlalchemy.exc import DataError, IntegrityError, OperationalError, ProgrammingError
 from sqlalchemy.orm import Session, sessionmaker
-
 from src.config.config import Config
 from src.core.exception import (
+    AutoCartServiceError,
     ConstraintViolationError,
     DatabaseConnectionError,
     InvalidArgumentError,
-    AutoCartServiceError,
 )
 from src.domain.entity.base import Base
 
@@ -38,11 +37,18 @@ class PostgresClient:
                 session.flush()
                 session.close()
 
-    def drop_tables(self):
+    def drop_tables(self) -> None:
         Base.metadata.drop_all(self.db_engine)
 
-    def create_tables(self):
+    def create_tables(self) -> None:
         Base.metadata.create_all(self.db_engine)
+
+    def insert_sample_data(self) -> None:
+        for table in ["products"]:
+            with open(f"resources/sample_data/{table}.sql", "r") as sql_file:
+                with self.get_session() as session:
+                    for statement in sql_file:
+                        session.execute(text(statement))
 
     @staticmethod
     def _handle_db_errors(throwable: Exception) -> None:

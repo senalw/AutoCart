@@ -1,8 +1,7 @@
 import uuid
 
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Depends, status
-
 from src.core.container import Container
 from src.schema import (
     CheckoutOrderRequest,
@@ -24,7 +23,9 @@ router = APIRouter(prefix="/order")
 async def checkout_order(
     cart_id: str,
     request: CheckoutOrderRequest,
-    order_service: OrderService = Depends(Provide[Container.order_service]),
+    order_service: OrderService = Depends(  # noqa B008
+        Provide[Container.order_service]
+    ),
 ) -> CheckoutOrderResponse:
     order_schema: OrderSchema = order_service.checkout_order(
         uuid.UUID(cart_id),
@@ -35,14 +36,16 @@ async def checkout_order(
 
 
 @router.get(
-    "/view/{order_id}",
+    "/{order_id}",
     status_code=status.HTTP_201_CREATED,
     response_model=ViewOrderResponse,
 )
 @inject
 async def view_order(
     order_id: str,
-    order_service: OrderService = Depends(Provide[Container.order_service]),
+    order_service: OrderService = Depends(  # noqa B008
+        Provide[Container.order_service]
+    ),
 ) -> ViewOrderResponse:
     order_schema: OrderSchema = order_service.view_order(uuid.UUID(order_id))
     return ViewOrderResponse(order=order_schema)

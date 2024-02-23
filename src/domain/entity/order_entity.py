@@ -1,10 +1,10 @@
 import uuid
 from datetime import datetime
 
+from sqlalchemy import DateTime, Float, ForeignKey, String, UUID
+from sqlalchemy.orm import Mapped, MappedColumn, relationship
 from src.domain.entity import CartEntity
 from src.domain.entity.base import Base
-from sqlalchemy import DateTime, Float, ForeignKey, String, UUID
-from sqlalchemy.orm import relationship, Mapped, MappedColumn
 
 
 class OrderEntity(Base):

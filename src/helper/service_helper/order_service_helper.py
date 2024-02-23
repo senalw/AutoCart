@@ -1,7 +1,7 @@
 import uuid
 
 from sqlalchemy.orm import Session
-from src.domain.entity import CartEntity, ProductEntity, CartProductEntity
+from src.domain.entity import CartEntity, CartProductEntity, ProductEntity
 from src.repository import (
     CartProductRepositoryABC,
     CartRepositoryABC,

@@ -1,7 +1,7 @@
 from typing import List
 
-from src.domain.entity import ProductEntity, CartEntity, OrderEntity
-from src.schema import CartSchema, ProductSchema, OrderSchema
+from src.domain.entity import CartEntity, OrderEntity, ProductEntity
+from src.schema import CartSchema, OrderSchema, ProductSchema
 
 
 class EntityToSchemaMapper:

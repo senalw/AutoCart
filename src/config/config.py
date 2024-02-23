@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+from typing import Any
 
 from settings import ROOT_DIR
 from src.config.env_interpolation import EnvInterpolation
@@ -6,12 +7,12 @@ from src.config.env_interpolation import EnvInterpolation
 
 class Config:
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls: Any) -> Any:
         if not getattr(cls, "_instance", None):
             cls._instance = cls()
         return cls._instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         config_parser: ConfigParser = ConfigParser(
             interpolation=EnvInterpolation()
         )  # noqa E501

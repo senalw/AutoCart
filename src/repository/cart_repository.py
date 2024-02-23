@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from sqlalchemy.orm import Session
-
 from src.domain.entity import CartEntity
 
 

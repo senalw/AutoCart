@@ -1,9 +1,9 @@
 import uuid
 
+from sqlalchemy import Column, ForeignKey, Integer, UUID
+from sqlalchemy.orm import Mapped, MappedColumn, relationship
 from src.domain.entity.base import Base
 from src.domain.entity.product_entity import ProductEntity
-from sqlalchemy import Column, ForeignKey, UUID, Integer
-from sqlalchemy.orm import relationship, Mapped, MappedColumn
 
 
 class CartProductEntity(Base):

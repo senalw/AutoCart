@@ -1,10 +1,10 @@
 import datetime
 import uuid
 
-from sqlalchemy.orm import relationship, Mapped, MappedColumn
 from sqlalchemy import DateTime, Float, func, UUID
-from src.domain.entity.cart_product_entity import CartProductEntity
+from sqlalchemy.orm import Mapped, MappedColumn, relationship
 from src.domain.entity.base import Base
+from src.domain.entity.cart_product_entity import CartProductEntity
 
 
 class CartEntity(Base):
