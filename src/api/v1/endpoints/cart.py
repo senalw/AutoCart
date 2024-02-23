@@ -1,15 +1,13 @@
 import uuid
 
 from dependency_injector.wiring import inject, Provide
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from src.core.container import Container
 from src.core.exception import RequestValidationError
 from src.schema import (
-    AddToCartRequest,
     AddToCartResponse,
     CartSchema,
     CreateCartResponse,
-    RemoveFromCartRequest,
     ViewCartItemsResponse,
 )
 from src.service import OrderService
@@ -37,39 +35,42 @@ async def create_cart(
 
 
 @router.post(
-    "/{product_id}",
+    "/{cart_id}/product/{product_id}",
     status_code=status.HTTP_201_CREATED,
     response_model=AddToCartResponse,
 )
 @inject
 async def add_to_cart(
+    cart_id: str,
     product_id: str,
-    request: AddToCartRequest,
+    qty: int = Query(  # Default value of 1 if qty is not provided. # noqa B008
+        default=1, gt=0
+    ),
     order_service: OrderService = Depends(  # noqa B008
         Provide[Container.order_service]
     ),
 ) -> AddToCartResponse:
-    RequestValidator.validate_add_to_cart_request(request, product_id)
+    RequestValidator.validate_add_to_cart_request(cart_id, product_id, qty)
     cart_schema: CartSchema = order_service.add_to_cart(
-        uuid.UUID(product_id), request.cart_id, request.qty
+        uuid.UUID(product_id), uuid.UUID(cart_id), qty
     )
     return AddToCartResponse(items=cart_schema)
 
 
 @router.delete(
-    "/{product_id}",
+    "/{cart_id}/product/{product_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 @inject
 async def remove_item_from_cart(
+    cart_id: str,
     product_id: str,
-    request: RemoveFromCartRequest,
     order_service: OrderService = Depends(  # noqa B008
         Provide[Container.order_service]
     ),
 ) -> None:
-    RequestValidator.validate_remove_from_cart_request(request, product_id)
-    order_service.remove_from_cart(uuid.UUID(product_id), request.cart_id)
+    RequestValidator.validate_remove_from_cart_request(cart_id, product_id)
+    order_service.remove_from_cart(uuid.UUID(product_id), uuid.UUID(cart_id))
 
 
 @router.get(

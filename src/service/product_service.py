@@ -26,9 +26,10 @@ class ProductService:
                 )
         return products
 
-    def add_product(self, product: ProductEntity) -> None:
+    def add_product(self, product: ProductEntity) -> ProductEntity:
         with self.database.get_session() as session:
             self.product_repository.add_product(session, product)
+            return product
 
     def get_product_by_id(self, product_id: uuid.UUID) -> Optional[ProductSchema]:
         with self.database.get_session() as session:

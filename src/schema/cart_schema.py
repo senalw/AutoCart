@@ -16,17 +16,8 @@ class CreateCartResponse(Response):
     cart_id: uuid.UUID
 
 
-class AddToCartRequest(Request):
-    cart_id: str
-    qty: int
-
-
 class AddToCartResponse(Response):
     items: CartSchema
-
-
-class RemoveFromCartRequest(Request):
-    cart_id: uuid.UUID
 
 
 class ViewCartItemsRequest(Request):

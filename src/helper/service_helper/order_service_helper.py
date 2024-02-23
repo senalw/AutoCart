@@ -13,7 +13,7 @@ class OrderServiceHelper:
     @staticmethod
     def add_to_cart(
         session: Session,
-        cart_id: str,
+        cart_id: uuid.UUID,
         product_entity: ProductEntity,
         requested_qty: int,
         cart_repository: CartRepositoryABC,
@@ -42,12 +42,12 @@ class OrderServiceHelper:
     @staticmethod
     def _get_cart_entity(
         session: Session,
-        cart_id: str,
+        cart_id: uuid.UUID,
         product_entity: ProductEntity,
         requested_qty: int,
         cart_repository: CartRepositoryABC,
     ) -> CartEntity:
-        cart_entity: CartEntity = cart_repository.get_cart(session, uuid.UUID(cart_id))
+        cart_entity: CartEntity = cart_repository.get_cart(session, cart_id)
         # add new item amount to existing amount.
         amount: int = cart_entity.amount + (product_entity.price * requested_qty)
 

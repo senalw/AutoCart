@@ -2,10 +2,8 @@ from datetime import datetime
 
 from src.core.exception import RequestValidationError
 from src.schema import (
-    AddToCartRequest,
     CheckoutOrderRequest,
     CreateProductRequest,
-    RemoveFromCartRequest,
     UpdateProductRequest,
 )
 from src.util.utils import is_valid_uuid
@@ -34,34 +32,30 @@ class RequestValidator:
             )
 
     @staticmethod
-    def validate_add_to_cart_request(
-        request: AddToCartRequest, product_id: str
-    ) -> None:
-        if not is_valid_uuid(product_id):
-            raise RequestValidationError(
-                f"Invalid product id present in the request: {request.product_id}"
-            )
-
-        if not is_valid_uuid(request.cart_id):
-            raise RequestValidationError(
-                f"Invalid cart id present in the request: {request.cart_id}"
-            )
-
-        if request.qty <= 0:
-            raise RequestValidationError("Quantity of product should be greater than 0")
-
-    @staticmethod
-    def validate_remove_from_cart_request(
-        request: RemoveFromCartRequest, product_id: str
-    ) -> None:
+    def validate_add_to_cart_request(cart_id: str, product_id: str, qty: int) -> None:
         if not is_valid_uuid(product_id):
             raise RequestValidationError(
                 f"Invalid product id present in the request: {product_id}"
             )
 
-        if not is_valid_uuid(str(request.cart_id)):
+        if not is_valid_uuid(cart_id):
             raise RequestValidationError(
-                f"Invalid product id present in the request: {request.cart_id}"
+                f"Invalid cart id present in the request: {cart_id}"
+            )
+
+        if qty <= 0:
+            raise RequestValidationError("Quantity of product should be greater than 0")
+
+    @staticmethod
+    def validate_remove_from_cart_request(cart_id: str, product_id: str) -> None:
+        if not is_valid_uuid(product_id):
+            raise RequestValidationError(
+                f"Invalid product id present in the request: {product_id}"
+            )
+
+        if not is_valid_uuid(cart_id):
+            raise RequestValidationError(
+                f"Invalid product id present in the request: {cart_id}"
             )
 
     @staticmethod

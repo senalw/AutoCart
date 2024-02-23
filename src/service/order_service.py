@@ -41,7 +41,9 @@ class OrderService:
             self.cart_repository.create_cart(session, cart)
             return EntityToSchemaMapper.getSchemaFromCartEntity(cart)
 
-    def add_to_cart(self, product_id: uuid.UUID, cart_id: str, qty: int) -> CartSchema:
+    def add_to_cart(
+        self, product_id: uuid.UUID, cart_id: uuid.UUID, qty: int
+    ) -> CartSchema:
         # this block will ensure that all the db operations occurs in the same DB transaction
         with self.database.get_session() as session:
             product_entity: ProductEntity = self.product_repository.find_product_by_id(
@@ -76,6 +78,8 @@ class OrderService:
     def remove_from_cart(self, product_id: uuid.UUID, cart_id: uuid.UUID) -> None:
         with self.database.get_session() as session:
             cart_entity: CartEntity = self.cart_repository.get_cart(session, cart_id)
+            if not cart_entity:
+                raise NotFoundError(f"Unable to find cart for the cart id: {cart_id}")
 
             for cart_product in cart_entity.cart_products[
                 :

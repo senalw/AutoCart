@@ -1,4 +1,5 @@
 import uuid
+from copy import copy
 from typing import List, Optional
 
 from dependency_injector.wiring import inject, Provide
@@ -24,7 +25,7 @@ router = APIRouter(prefix="/products")
 
 
 @router.get(
-    "",
+    "",  # E.g. /products?page_size=5&page_token=MW==
     status_code=status.HTTP_200_OK,
     response_model=ListProductResponse,
 )
@@ -66,10 +67,13 @@ async def create_product(
     product_entity: ProductEntity = SchemaToEntityMapper.getProductSchemaFromRequest(
         request, uuid.uuid4()
     )
+    response_entity = copy(  # fix: sqlalchemy.orm.exc.DetachedInstanceError
+        product_entity
+    )
     product_service.add_product(product_entity)
 
     return CreateProductResponse(
-        product=EntityToSchemaMapper.getSchemaFromProductEntity(product_entity)
+        product=EntityToSchemaMapper.getSchemaFromProductEntity(response_entity)
     )
 
 
@@ -107,7 +111,7 @@ async def update_product_by_id(
 ) -> UpdateProductResponse:
     RequestValidator.validate_update_product_request(request)
     product: Optional[ProductSchema] = product_service.get_product_by_id(  # noqa B008
-        request.product.product_id
+        request.product.id
     )
     if not product:
         raise NotFoundError(

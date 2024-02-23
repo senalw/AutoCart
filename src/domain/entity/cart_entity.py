@@ -22,5 +22,4 @@ class CartEntity(Base):
         uselist=True,  # one-to-many relationship
         primaryjoin="CartEntity.id == CartProductEntity.cart_id",
         lazy="joined",
-        cascade="all, delete-orphan",  # Cascade deletion configuration
     )

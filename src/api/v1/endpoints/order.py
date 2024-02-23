@@ -18,7 +18,7 @@ router = APIRouter(prefix="/order")
 
 
 @router.post(
-    "/checkout/{cart_id}",
+    "/cart/{cart_id}",
     status_code=status.HTTP_201_CREATED,
     response_model=CheckoutOrderResponse,
 )
