@@ -13,11 +13,9 @@ This API has below user stories implemented from FastAPI:
 
 Special Notes
 --------------
-## Assumptions and limitations
 
 ### Limitations
-* Only basic validations are included and edge cases may fail.
-* Atomic operation are not implemented for handling Stock on hand quantity when adding/deleting items to/from cart.
+* Unit tests were not implemented due to time constraint.
 
 ### Assumptions
 * Assumed that there will be separate services for user management and authentication.

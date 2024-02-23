@@ -14,10 +14,14 @@ class ProductRepositoryImpl(ProductRepositoryABC):
     def find_product_by_id(
         self, session: Session, product_id: uuid.UUID
     ) -> Optional[ProductEntity]:
-        query: Query = session.query(ProductEntity).filter(
-            ProductEntity.id == product_id
+        # with_for_update(): locking specific row until the db transaction is completed.
+        # So concurrent update is not allowed.
+        return (
+            session.query(ProductEntity)
+            .filter_by(id=product_id)
+            .with_for_update()
+            .first()
         )
-        return query.first()
 
     def fetch_products(
         self,
