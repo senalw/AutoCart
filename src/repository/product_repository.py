@@ -1,9 +1,9 @@
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, List, Optional
+from typing import List, Optional
 
-from src.domain.entity import ProductEntity
 from sqlalchemy.orm import Session
+from src.domain.entity import ProductEntity
 
 
 class ProductRepositoryABC(ABC):
@@ -21,6 +21,8 @@ class ProductRepositoryABC(ABC):
     def fetch_products(
         self,
         session: Session,
+        page_numer: int,
+        page_size: int,
     ) -> List[ProductEntity]:
         raise NotImplementedError
 
@@ -35,7 +37,5 @@ class ProductRepositoryABC(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_selected_columns(
-        self, session: Session, product_id: uuid.UUID, fields: List[Any]
-    ) -> Optional[ProductEntity]:
+    def get_total_products_count(self, session: Session) -> int:
         raise NotImplementedError

@@ -1,8 +1,8 @@
 import uuid
-from typing import List, Optional
+from typing import List
 
-from src.schema.base_schema import Request, Response
 from pydantic import BaseModel
+from src.schema import Request, Response
 
 
 class ProductSchema(BaseModel):
@@ -27,6 +27,7 @@ class CreateProductResponse(Response):
 
 class ListProductResponse(Response):
     products: List[ProductSchema]
+    next_page_token: str
 
 
 class GetProductRequest(Request):

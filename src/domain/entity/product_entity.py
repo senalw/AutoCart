@@ -1,9 +1,8 @@
 import uuid
 
-from sqlalchemy.orm import MappedColumn, Mapped
-
+from sqlalchemy import Float, Integer, String, UUID
+from sqlalchemy.orm import Mapped, MappedColumn
 from src.domain.entity.base import Base
-from sqlalchemy import Column, UUID, Float, Integer, String
 
 
 class ProductEntity(Base):

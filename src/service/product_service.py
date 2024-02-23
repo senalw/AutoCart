@@ -15,10 +15,12 @@ class ProductService:
         self.database: PostgresClient = database
         self.product_repository: ProductRepositoryABC = product_repository
 
-    def list_products(self) -> List[ProductSchema]:
+    def list_products(self, page_numer: int, page_size: int) -> List[ProductSchema]:
         products: List[ProductSchema] = []
         with self.database.get_session() as session:
-            for product_entity in self.product_repository.fetch_products(session):
+            for product_entity in self.product_repository.fetch_products(
+                session, page_numer, page_size
+            ):
                 products.append(
                     EntityToSchemaMapper.getSchemaFromProductEntity(product_entity)
                 )
@@ -44,3 +46,7 @@ class ProductService:
     def delete_product(self, product_id: uuid.UUID) -> int:
         with self.database.get_session() as session:
             return self.product_repository.delete_product_by_id(session, product_id)
+
+    def get_total_products_count(self) -> int:
+        with self.database.get_session() as session:
+            return self.product_repository.get_total_products_count(session)

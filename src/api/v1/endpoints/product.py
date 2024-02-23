@@ -1,9 +1,8 @@
 import uuid
 from typing import List, Optional
 
-from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, status
-
+from dependency_injector.wiring import inject, Provide
+from fastapi import APIRouter, Depends, Query, status
 from src.core.container import Container
 from src.core.exception import NotFoundError
 from src.domain.entity import ProductEntity
@@ -19,30 +18,48 @@ from src.schema import (
     UpdateProductResponse,
 )
 from src.service import ProductService
+from src.util.utils import get_next_page_token, get_page_number
 
-router = APIRouter(prefix="/product")
+router = APIRouter(prefix="/products")
 
 
 @router.get(
-    "/list-products", status_code=status.HTTP_200_OK, response_model=ListProductResponse
+    "",
+    status_code=status.HTTP_200_OK,
+    response_model=ListProductResponse,
 )
 @inject
 async def list_products(
-    product_service: ProductService = Depends(Provide[Container.product_service]),
+    page_size: int = Query(  # noqa B008
+        ..., description="The number of products per page"
+    ),
+    page_token: str = Query(  # noqa B008
+        None, description="The token of the page requested"
+    ),
+    product_service: ProductService = Depends(  # noqa B008
+        Provide[Container.product_service]
+    ),
 ) -> ListProductResponse:
-    products: List[ProductSchema] = product_service.list_products()
-    return ListProductResponse(products=products)
+    page_number: int = get_page_number(page_token)
+    total_products: int = product_service.get_total_products_count()
+    products: List[ProductSchema] = product_service.list_products(
+        page_number, page_size
+    )
+    next_page_token: str = get_next_page_token(page_number, page_size, total_products)
+    return ListProductResponse(products=products, next_page_token=next_page_token)
 
 
 @router.post(
-    "/add-product",
+    "",
     status_code=status.HTTP_201_CREATED,
     response_model=CreateProductResponse,
 )
 @inject
 async def create_product(
     request: CreateProductRequest,
-    product_service: ProductService = Depends(Provide[Container.product_service]),
+    product_service: ProductService = Depends(  # noqa B008
+        Provide[Container.product_service]
+    ),
 ) -> CreateProductResponse:
 
     # If product_id is not provided, it'll be generated internally
@@ -69,16 +86,18 @@ async def create_product(
 
 
 @router.get(
-    "/get/{product_id}",
+    "/{product_id}",
     status_code=status.HTTP_200_OK,
     response_model=GetProductResponse,
 )
 @inject
 async def get_product_by_id(
     product_id: str,
-    product_service: ProductService = Depends(Provide[Container.product_service]),
+    product_service: ProductService = Depends(  # noqa B008
+        Provide[Container.product_service]
+    ),
 ) -> GetProductResponse:
-    product: Optional[ProductSchema] = product_service.get_product_by_id(
+    product: Optional[ProductSchema] = product_service.get_product_by_id(  # noqa B008
         uuid.UUID(product_id)
     )
     if not product:
@@ -87,17 +106,21 @@ async def get_product_by_id(
 
 
 @router.put(
-    "/update-product",
+    "",
     status_code=status.HTTP_200_OK,
     response_model=UpdateProductResponse,
 )
 @inject
-async def get_product_by_id(
+async def update_product_by_id(
     request: UpdateProductRequest,
-    product_service: ProductService = Depends(Provide[Container.product_service]),
+    product_service: ProductService = Depends(  # noqa B008
+        Provide[Container.product_service]
+    ),
 ) -> UpdateProductResponse:
     product_id = request.product.id
-    product: Optional[ProductSchema] = product_service.get_product_by_id(product_id)
+    product: Optional[ProductSchema] = product_service.get_product_by_id(  # noqa B008
+        product_id
+    )
     if not product:
         raise NotFoundError(f"Product not found for the product_id: {product_id}")
 
@@ -108,14 +131,16 @@ async def get_product_by_id(
 
 
 @router.delete(
-    "/delete/{product_id}",
+    "/{product_id}",
     status_code=status.HTTP_200_OK,
     response_model=DeleteProductResponse,
 )
 @inject
 async def delete_product_by_id(
     product_id: str,
-    product_service: ProductService = Depends(Provide[Container.product_service]),
+    product_service: ProductService = Depends(  # noqa B008
+        Provide[Container.product_service]
+    ),
 ) -> DeleteProductResponse:
     product_service.delete_product(uuid.UUID(product_id))
     return DeleteProductResponse()

@@ -1,9 +1,10 @@
 import uuid
-from typing import Any, List, Optional
+from typing import List, Optional
 
+from sqlalchemy.orm import Query, Session
+from sqlalchemy.sql import func
 from src.domain.entity import ProductEntity
 from src.repository.product_repository import ProductRepositoryABC
-from sqlalchemy.orm import Session, Query
 
 
 class ProductRepositoryImpl(ProductRepositoryABC):
@@ -21,8 +22,11 @@ class ProductRepositoryImpl(ProductRepositoryABC):
     def fetch_products(
         self,
         session: Session,
+        page_numer: int,
+        page_size: int,
     ) -> List[ProductEntity]:
         query: Query = session.query(ProductEntity)
+        query = query.limit(limit=page_size).offset(page_numer)
         return query.all()
 
     def update(
@@ -35,8 +39,10 @@ class ProductRepositoryImpl(ProductRepositoryABC):
             session.query(ProductEntity).filter(ProductEntity.id == product_id).delete()
         )
 
-    def get_selected_columns(
-        self, session: Session, product_id: uuid.UUID, fields: List[Any]
-    ) -> Optional[ProductEntity]:
-        query: Query = session.query(*fields).filter(ProductEntity.id == product_id)
-        return query.first()
+    def get_total_products_count(self, session: Session) -> int:
+        # Just returning count without fetching all the columns
+        return (
+            session.query(ProductEntity)
+            .with_entities(func.count(ProductEntity.id))
+            .scalar()
+        )
