@@ -32,7 +32,7 @@ class SchemaToEntityMapper:
     def getProductSchemaFromRequest(
         request: CreateProductRequest, product_id: uuid.UUID
     ) -> ProductEntity:
-        ProductEntity(
+        return ProductEntity(
             id=product_id,
             name=request.name,
             price=request.price,
