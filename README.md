@@ -53,6 +53,7 @@ python 3.11
 
 ```shell
 make setup
+make install
 ```
 
 #### 3. Set Environments variables
