@@ -4,7 +4,7 @@ from typing import List, Optional
 from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Depends, Query, status
 from src.core.container import Container
-from src.core.exception import NotFoundError, ValidationError
+from src.core.exception import NotFoundError, RequestValidationError
 from src.domain.entity import ProductEntity
 from src.mapper import EntityToSchemaMapper, SchemaToEntityMapper
 from src.schema import (
@@ -132,7 +132,7 @@ async def delete_product_by_id(
     ),
 ) -> None:
     if not is_valid_uuid(product_id):
-        raise ValidationError(
+        raise RequestValidationError(
             f"Invalid product id present in the request: {product_id}"
         )
     product_service.delete_product(uuid.UUID(product_id))

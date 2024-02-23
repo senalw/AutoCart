@@ -3,7 +3,7 @@ import uuid
 from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Depends, status
 from src.core.container import Container
-from src.core.exception import ValidationError
+from src.core.exception import RequestValidationError
 from src.schema import (
     CheckoutOrderRequest,
     CheckoutOrderResponse,
@@ -52,6 +52,6 @@ async def view_order(
     ),
 ) -> ViewOrderResponse:
     if not is_valid_uuid(order_id):
-        raise ValidationError("Invalid order_id present in the request")
+        raise RequestValidationError("Invalid order_id present in the request")
     order_schema: OrderSchema = order_service.view_order(uuid.UUID(order_id))
     return ViewOrderResponse(order=order_schema)

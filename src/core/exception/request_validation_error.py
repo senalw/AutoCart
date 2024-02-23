@@ -2,9 +2,9 @@ from fastapi import status
 from src.core.exception import AutoCartServiceError
 
 
-class ValidationError(AutoCartServiceError):
+class RequestValidationError(AutoCartServiceError):
     def __init__(
-        self, message: str, code: status = status.HTTP_422_UNPROCESSABLE_ENTITY
+        self, message: str, code: status = status.HTTP_400_BAD_REQUEST
     ) -> None:
         super().__init__(message, code)
         self.message = message
