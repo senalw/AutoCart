@@ -4,7 +4,7 @@ from src.core.exception.auto_cart_service_error import AutoCartServiceError
 
 class InvalidArgumentError(AutoCartServiceError):
     def __init__(
-        self, message: str, code: status = status.WS_1003_UNSUPPORTED_DATA
+        self, message: str, code: status = status.HTTP_422_UNPROCESSABLE_ENTITY
     ) -> None:
         super().__init__(message, code)
         self.message = message
