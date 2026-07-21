@@ -13,6 +13,7 @@ from src.service import OrderService, ProductService
 class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
         modules=[
+            "src.api.health",
             "src.api.v1.endpoints.product",
             "src.api.v1.endpoints.cart",
             "src.api.v1.endpoints.order",

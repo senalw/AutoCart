@@ -17,15 +17,22 @@ from src.domain.entity.base import Base
 
 class PostgresClient:
     def __init__(self, configs: Config.DatabaseConfig) -> None:
-        self.db_engine: Engine = create_engine(configs.db_url)
+        self.db_engine: Engine = create_engine(
+            configs.db_url,
+            pool_size=configs.pool_size,
+            max_overflow=configs.max_overflow,
+            pool_timeout=configs.pool_timeout,
+            # detect stale connections (e.g. after a db restart) before use
+            pool_pre_ping=True,
+        )
+        # "auto flush" should be turned off for merging objects in a same session.
+        self.session_maker = sessionmaker(bind=self.db_engine, autoflush=False)
 
     @contextmanager
     def get_session(self) -> Session:
         session = None
         try:
-            # "auto flush" should be turned off for merging objects in a same session.
-            sm = sessionmaker(bind=self.db_engine, autoflush=False)
-            session = sm()
+            session = self.session_maker()
             yield session
             session.commit()
         except Exception as e:
@@ -36,6 +43,10 @@ class PostgresClient:
             if session:
                 session.flush()
                 session.close()
+
+    def close(self) -> None:
+        # release all pooled connections; called on app shutdown
+        self.db_engine.dispose()
 
     def drop_tables(self) -> None:
         Base.metadata.drop_all(self.db_engine)
@@ -62,7 +73,8 @@ class PostgresClient:
         ):  # passing None/Incorrect parameter for mandatory parameter
             raise InvalidArgumentError("Invalid argument")
         elif isinstance(throwable, AttributeError):
-            raise InvalidArgumentError(f"Invalid attribute: [{throwable.name}]")
+            # details are in the log above; don't echo internals to clients
+            raise InvalidArgumentError("Invalid request data")
         elif isinstance(
             throwable, (OperationalError, ProgrammingError)
         ):  # Programming error occurs when table not found
