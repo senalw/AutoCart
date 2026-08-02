@@ -33,9 +33,9 @@ class ProductService:
 
     def get_product_by_id(self, product_id: uuid.UUID) -> Optional[ProductSchema]:
         with self.database.get_session() as session:
-            product_entity: Optional[
-                ProductEntity
-            ] = self.product_repository.find_product_by_id(session, product_id)
+            product_entity: Optional[ProductEntity] = (
+                self.product_repository.find_product_by_id(session, product_id)
+            )
             if product_entity:
                 return EntityToSchemaMapper.getSchemaFromProductEntity(product_entity)
 
