@@ -2,7 +2,7 @@ from fastapi import status
 from src.core.exception import AutoCartServiceError
 
 
-class RequestValidationError(AutoCartServiceError):
+class InvalidRequestError(AutoCartServiceError):
     def __init__(
         self, message: str, code: status = status.HTTP_400_BAD_REQUEST
     ) -> None:

@@ -3,7 +3,7 @@ import uuid
 from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Depends, Query, status
 from src.core.container import Container
-from src.core.exception import RequestValidationError
+from src.core.exception import InvalidRequestError
 from src.schema import (
     AddToCartResponse,
     CartSchema,
@@ -86,8 +86,6 @@ async def view_cart_items(
     ),
 ) -> ViewCartItemsResponse:
     if not is_valid_uuid(cart_id):
-        raise RequestValidationError(
-            f"Invalid cart id present in the request: {cart_id}"
-        )
+        raise InvalidRequestError(f"Invalid cart id present in the request: {cart_id}")
     items: CartSchema = order_service.view_items_in_the_cart(uuid.UUID(cart_id))
     return ViewCartItemsResponse(items=items)
