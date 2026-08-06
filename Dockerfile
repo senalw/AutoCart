@@ -1,4 +1,4 @@
-FROM python:3.11.9-slim-bookworm AS builder
+FROM python:3.14.0-slim-bookworm AS builder
 
 WORKDIR /AutoCart
 
@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 
-FROM python:3.11.9-slim-bookworm
+FROM python:3.14.0-slim-bookworm
 LABEL author='SenalW'
 
 ENV PYTHONUNBUFFERED=1
